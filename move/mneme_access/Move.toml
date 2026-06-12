@@ -1,0 +1,13 @@
+[package]
+name = "mneme_access"
+edition = "2024.beta"
+license = "Apache-2.0"
+
+[dependencies]
+# Sui framework is provided as a system dependency by the toolchain on
+# recent CLIs; if `sui move build` cannot resolve it, uncomment the git dep
+# below (matching your installed CLI's framework branch, e.g. framework/testnet).
+# Sui = { git = "https://github.com/MystenLabs/sui.git", subdir = "crates/sui-framework/packages/sui-framework", rev = "framework/testnet" }
+
+[addresses]
+mneme_access = "0x0"
