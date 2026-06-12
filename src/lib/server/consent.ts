@@ -20,13 +20,13 @@ interface RawGrantEntry {
   };
 }
 
-/** Read all grant rows from the ConsentRegistry object content. */
-export async function readGrants(): Promise<
-  { app: string; namespace: string; active: boolean }[]
-> {
-  const env = serverEnv();
+/** Read all grant rows from a ConsentRegistry object (default = env registry). */
+export async function readGrants(
+  registryId?: string,
+): Promise<{ app: string; namespace: string; active: boolean }[]> {
+  const id = registryId || serverEnv().MNEME_REGISTRY_ID;
   const res = await suiClient().getObject({
-    id: env.MNEME_REGISTRY_ID,
+    id,
     options: { showContent: true },
   });
   const content = res.data?.content;
@@ -43,10 +43,14 @@ export async function readGrants(): Promise<
 }
 
 /** Is `app` allowed to read `namespace`? Owner address is always allowed. */
-export async function isAuthorized(app: string, namespace: string): Promise<boolean> {
+export async function isAuthorized(
+  app: string,
+  namespace: string,
+  registryId?: string,
+): Promise<boolean> {
   const env = serverEnv();
   if (app.toLowerCase() === env.SUI_ADDRESS.toLowerCase()) return true;
-  const grants = await readGrants();
+  const grants = await readGrants(registryId);
   return grants.some(
     (g) => g.app.toLowerCase() === app.toLowerCase() && g.namespace === namespace && g.active,
   );

@@ -12,7 +12,7 @@ Fill these into the DeepSurge submission form.
 | **Demo video (≤5 min, YouTube)** | _(record per `DEMO.md`)_ |
 | **Website** | _(Vercel URL from `DEPLOY.md`)_ |
 | **Deployment** | Sui **testnet** |
-| **Package ID** | `0x7f789eed753e2aa6cee2d087843e2f3a087a7d8c785bca8869d39cc89e1148ad` |
+| **Package ID** | `0x032dbacbb8573145f3a46dcd4c15ddf4164521504c4507847e5b51d4258361a7` |
 
 ## Description (what it does, why it matters)
 

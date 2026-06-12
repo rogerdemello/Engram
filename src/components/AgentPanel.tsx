@@ -19,10 +19,12 @@ export function AgentPanel({
   app,
   capture,
   starters,
+  registryId,
 }: {
   app: AppDef;
   capture: boolean;
   starters?: string[];
+  registryId?: string;
 }) {
   const [msgs, setMsgs] = useState<Msg[]>([]);
   const [input, setInput] = useState("");
@@ -36,7 +38,7 @@ export function AgentPanel({
     setMsgs((m) => [...m, { role: "user", text }]);
     setLoading(true);
     try {
-      const r = await api.agent(app.id, text, capture);
+      const r = await api.agent(app.id, text, capture, registryId);
       setMsgs((m) => [
         ...m,
         {

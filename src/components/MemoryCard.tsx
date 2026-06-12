@@ -3,7 +3,7 @@ import { useState } from "react";
 import type { Memory } from "@/lib/types";
 import { blobUrl } from "@/lib/constants";
 import { shortBlob } from "@/lib/format";
-import { api } from "@/lib/client";
+import { api, notifyChanged } from "@/lib/client";
 
 const NS_COLOR: Record<string, string> = {
   chat: "var(--violet)",
@@ -26,10 +26,30 @@ export function MemoryCard({ memory }: { memory: Memory }) {
     }
   }
 
+  const [forgetting, setForgetting] = useState(false);
+
+  async function onForget() {
+    setForgetting(true);
+    try {
+      await api.forget(memory.blobId);
+      notifyChanged();
+    } catch {
+      setForgetting(false);
+    }
+  }
+
   return (
     <div className="panel p-3.5 flex flex-col gap-2.5">
       <div className="flex items-start justify-between gap-2">
         <p className="text-sm leading-relaxed text-foreground/95">{memory.text}</p>
+        <button
+          onClick={onForget}
+          disabled={forgetting}
+          title="Forget — the agent stops using this memory and it leaves the inspector"
+          className="shrink-0 text-muted hover:text-rose text-xs leading-none mt-0.5"
+        >
+          {forgetting ? "…" : "✕"}
+        </button>
       </div>
 
       <div className="flex flex-wrap items-center gap-1.5">

@@ -4,6 +4,7 @@ import { APPS } from "@/lib/constants";
 import { txUrl, objUrl } from "@/lib/constants";
 import { short } from "@/lib/format";
 import { api, notifyChanged } from "@/lib/client";
+import { useWalletOwner } from "./owner";
 
 interface Pair {
   appId: "chat" | "meal";
@@ -29,18 +30,22 @@ export function ConsentPanel({
   const [busy, setBusy] = useState<string | null>(null);
   const [digests, setDigests] = useState<Record<string, string>>({});
   const [err, setErr] = useState<string | null>(null);
+  const { walletMode, walletGrant } = useWalletOwner();
 
   const isActive = (p: Pair) =>
     grants.some((g) => g.app === p.appId && g.namespace === p.namespace && g.active);
 
   async function toggle(p: Pair) {
     const key = `${p.appId}:${p.namespace}`;
-    const active = isActive(p);
+    const active = isActive(p); // revoke if currently active
     setBusy(key);
     setErr(null);
     try {
-      const r = await api.setGrant(p.appId, p.namespace, active); // revoke if currently active
-      setDigests((d) => ({ ...d, [key]: r.digest }));
+      // wallet mode → the user signs the consent tx themselves; else server-custody
+      const digest = walletMode
+        ? await walletGrant(p.appId, p.namespace, active)
+        : (await api.setGrant(p.appId, p.namespace, active)).digest;
+      setDigests((d) => ({ ...d, [key]: digest }));
       notifyChanged();
     } catch (e) {
       setErr(e instanceof Error ? e.message : "failed");

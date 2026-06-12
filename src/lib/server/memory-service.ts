@@ -3,7 +3,7 @@ import { getMemwal } from "./memwal";
 import { classify } from "./classify";
 import { isAuthorized } from "./consent";
 import { appAddress, serverEnv } from "./env";
-import { addMemories } from "./store";
+import { addMemories, forgottenSet, listMemories } from "./store";
 import { APPS } from "../constants";
 import type { Memory, Receipt } from "../types";
 
@@ -87,7 +87,11 @@ export interface RecallForAgent {
  * skipped and reported as blocked. This is the heart of the demo: revoke the
  * grant on-chain and the meal agent can no longer see the chat memories.
  */
-export async function recallForAgent(appId: string, query: string): Promise<RecallForAgent> {
+export async function recallForAgent(
+  appId: string,
+  query: string,
+  registryId?: string,
+): Promise<RecallForAgent> {
   const ownNs = NS[appId] ?? "chat";
   const app = appAddress(appId);
   const otherNamespaces = Object.values(NS).filter((ns) => ns !== ownNs);
@@ -95,19 +99,62 @@ export async function recallForAgent(appId: string, query: string): Promise<Reca
   const allowed: string[] = [ownNs];
   const blocked: { namespace: string; reason: string }[] = [];
   for (const ns of otherNamespaces) {
-    if (await isAuthorized(app, ns)) allowed.push(ns);
+    if (await isAuthorized(app, ns, registryId)) allowed.push(ns);
     else blocked.push({ namespace: ns, reason: "no on-chain consent grant" });
   }
 
+  const gone = forgottenSet();
   const receipts: Receipt[] = [];
   for (const ns of allowed) {
     const memwal = getMemwal(ns);
     const res = await memwal.recall({ query, topK: 6, namespace: ns });
     for (const m of res.results) {
+      if (gone.has(m.blob_id)) continue; // forgotten memories are never used
       receipts.push({ blobId: m.blob_id, text: m.text, distance: m.distance, namespace: ns });
     }
   }
   // best matches first
   receipts.sort((a, b) => a.distance - b.distance);
   return { receipts: receipts.slice(0, 8), blocked };
+}
+
+/**
+ * Rehydrate the local inspector index from Walrus when it's empty (e.g. a
+ * serverless cold start). Does a broad recall per namespace and re-indexes —
+ * the memories live on Walrus, so the inspector can always be rebuilt.
+ */
+export async function rehydrateInspector(): Promise<Memory[]> {
+  if (listMemories().length > 0) return listMemories();
+  const owner = serverEnv().SUI_ADDRESS;
+  const gone = forgottenSet();
+  const all: Memory[] = [];
+  for (const [, ns] of Object.entries(NS)) {
+    const memwal = getMemwal(ns);
+    try {
+      const res = await memwal.recall({
+        query: "user profile preferences facts and details",
+        topK: 30,
+        maxDistance: 1.5,
+        namespace: ns,
+      });
+      for (const m of res.results) {
+        if (gone.has(m.blob_id)) continue;
+        const s = classify(m.text);
+        all.push({
+          id: m.blob_id,
+          blobId: m.blob_id,
+          text: m.text,
+          namespace: ns,
+          sealed: true,
+          sensitive: s.sensitive,
+          sensitivityLabel: s.label,
+          owner,
+        });
+      }
+    } catch {
+      /* best-effort */
+    }
+  }
+  addMemories(all);
+  return listMemories();
 }

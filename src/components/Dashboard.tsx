@@ -8,8 +8,9 @@ import { Wordmark } from "./Logo";
 import { AgentPanel } from "./AgentPanel";
 import { ConsentPanel } from "./ConsentPanel";
 import { MemoryCard } from "./MemoryCard";
+import { WalletBar } from "./WalletBar";
+import { useWalletOwner } from "./owner";
 
-const OWNER = process.env.NEXT_PUBLIC_SUI_ADDRESS ?? "";
 const PKG = process.env.NEXT_PUBLIC_MNEME_PACKAGE_ID ?? "";
 const REG = process.env.NEXT_PUBLIC_MNEME_REGISTRY_ID ?? "";
 
@@ -19,16 +20,18 @@ export function Dashboard() {
   const [memories, setMemories] = useState<Memory[]>([]);
   const [grants, setGrants] = useState<Grant[]>([]);
   const [filter, setFilter] = useState<Filter>("all");
+  const { registryId } = useWalletOwner();
+  const activeReg = registryId ?? REG;
 
   const refresh = useCallback(async () => {
     try {
-      const [m, g] = await Promise.all([api.memories(), api.grants()]);
+      const [m, g] = await Promise.all([api.memories(), api.grants(registryId ?? undefined)]);
       setMemories(m.memories);
       setGrants(g.grants);
     } catch {
       /* ignore transient */
     }
-  }, []);
+  }, [registryId]);
 
   useEffect(() => {
     refresh();
@@ -42,18 +45,14 @@ export function Dashboard() {
       {/* header */}
       <header className="flex items-center justify-between flex-wrap gap-3">
         <Wordmark size={30} />
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 flex-wrap">
           <span className="chip"><span className="live-dot" /> Sui testnet</span>
-          {OWNER && (
-            <a href={objUrl(OWNER)} target="_blank" rel="noopener noreferrer" className="chip mono hover:text-sky">
-              owner {short(OWNER, 6)} ↗
-            </a>
-          )}
           {PKG && (
             <a href={objUrl(PKG)} target="_blank" rel="noopener noreferrer" className="chip mono hover:text-sky">
               pkg {short(PKG, 6)} ↗
             </a>
           )}
+          <WalletBar />
         </div>
       </header>
 
@@ -68,6 +67,7 @@ export function Dashboard() {
         <AgentPanel
           app={APPS.chat}
           capture
+          registryId={registryId ?? undefined}
           starters={[
             "I'm vegan and I have a severe peanut allergy.",
             "I prefer morning meetings and I'm based in Lisbon.",
@@ -76,6 +76,7 @@ export function Dashboard() {
         <AgentPanel
           app={APPS.meal}
           capture={false}
+          registryId={registryId ?? undefined}
           starters={[
             "Plan me a quick high-protein dinner.",
             "Why did you choose that — what do you know about me?",
@@ -118,7 +119,7 @@ export function Dashboard() {
         </section>
 
         <div className="lg:col-span-5">
-          <ConsentPanel grants={grants} registryId={REG} packageId={PKG} />
+          <ConsentPanel grants={grants} registryId={activeReg} packageId={PKG} />
         </div>
       </div>
 

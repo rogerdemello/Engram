@@ -32,6 +32,8 @@ Sensitive facts (health, finance, identity) are auto-classified and protected wi
 
 ## The demo in 5 beats
 
+![Mneme dashboard](./shots/app.png)
+
 > Two different AI apps, one memory you own. (`/app`)
 
 1. **Capture** — Tell **Mneme Chat**: *"I'm vegan and I have a severe peanut allergy."* → it's extracted into discrete memories, each with a Walrus blob ID and a 🔒 sealed badge; the allergy is flagged **health-sensitive**.
@@ -74,8 +76,8 @@ Sensitive facts (health, finance, identity) are auto-classified and protected wi
 
 | Object | ID |
 |---|---|
-| `mneme_access` package (module `registry`) | [`0x7f789eed…1148ad`](https://suiscan.xyz/testnet/object/0x7f789eed753e2aa6cee2d087843e2f3a087a7d8c785bca8869d39cc89e1148ad) |
-| ConsentRegistry | [`0x38e3f53b…0f26`](https://suiscan.xyz/testnet/object/0x38e3f53b21b365026bac8e672f1d4ffbd7128b6736dff4cecf0a058ab4090f26) |
+| `mneme_access` package (module `registry`) | [`0x032dbacb…61a7`](https://suiscan.xyz/testnet/object/0x032dbacbb8573145f3a46dcd4c15ddf4164521504c4507847e5b51d4258361a7) |
+| ConsentRegistry (shared) | [`0xa2ee2220…be86`](https://suiscan.xyz/testnet/object/0xa2ee2220e03cf17fd28cabfd8f515ad969f48e0713e720e9ad3a012edec7be86) |
 | MemWal account | [`0x989bc044…67b8`](https://suiscan.xyz/testnet/object/0x989bc0443bd471d9b1698710705f688bcab8a7fec3dbbf73f6a83fbdf24867b8) |
 
 The Move package is in [`move/mneme_access`](./move/mneme_access/sources/registry.move).
@@ -86,7 +88,7 @@ The Move package is in [`move/mneme_access`](./move/mneme_access/sources/registr
 - **Consent-gated recall** — when an agent recalls memory from another app's namespace, the server first checks `isAuthorized(appAddress, namespace)` by reading the on-chain `ConsentRegistry`. No live grant → that namespace is skipped and reported as **blocked**.
 - **Grant / revoke** — `/api/grant` submits a real Sui transaction calling `registry::grant_access` / `revoke_access`, emitting `AccessGranted` / `AccessRevoked` events (a tamper-evident audit trail).
 - **Verify** — `/api/verify` fetches the blob from the public Walrus testnet aggregator; a 200 proves the memory is certified and live on decentralized storage.
-- **Seal-gated decryption (designed)** — `mneme_access::seal_approve` aborts unless the requester holds a live grant, so the same registry can cryptographically gate Seal decryption of sensitive memories (Manual-mode MemWal) — revoke → decrypt denied.
+- **Seal-gated decryption (proven)** — sensitive memories can be Seal-encrypted bound to our package; the Seal **key servers** release decryption keys only if they can run `mneme_access::seal_approve`, which aborts unless the requester holds a live grant in the (shared) `ConsentRegistry`. So **revoke on-chain → the key servers refuse → the memory is undecryptable** — enforced by the network, not our server. Reproduce it: `node scripts/dev/seal-proof.mjs` (before grant → denied · after grant → decrypted · after revoke → denied). Module: [`src/lib/server/seal.ts`](./src/lib/server/seal.ts).
 
 ## Run it locally
 
@@ -131,10 +133,18 @@ scripts/dev/              # bootstrap (provision + spike), reset (clean slate)
 - **Technical (20%)** — MemWal + Seal + Walrus + a custom Sui Move contract, *meaningfully* integrated and deployed to testnet, with everything independently verifiable on-chain and on Walrus.
 - **Presentation & vision (10%)** — *the memory layer for the agentic web: you own your context, agents stay honest.*
 
+## Wallet-native ownership
+
+Connect a Sui wallet (via `@mysten/dapp-kit`) and **"adopt"** it to create your *own*
+`ConsentRegistry` — after that, grant/revoke are **signed by your wallet** and the server gates recall
+on your registry (the `registryId` flows through `/api/grants` and `/api/agent`). Until you connect, the
+demo runs in frictionless server-custody mode. So ownership isn't a claim — the consent transactions are
+literally yours. (Code: `src/components/owner.tsx`, `WalletBar.tsx`.)
+
 ## Roadmap
 
-- Wallet-native ownership (zkLogin) so memories are bound to the end-user's own Sui account.
-- Full Seal cryptographic decrypt-gating wired to `seal_approve` for sensitive memories.
+- zkLogin sign-in so memories are bound to the end-user's Sui account with no extension.
+- Bind the MemWal memory account itself to the connected wallet (today the account is app-provisioned).
 - A memory marketplace: license your verified memories to agents with revocable, on-chain terms.
 - **Mainnet** deployment (architected as a config flip).
 

@@ -35,27 +35,27 @@ export const api = {
   capture: (appId: string, text: string) =>
     jpost<{ memories: Memory[] }>("/api/capture", { appId, text }),
 
-  agent: (appId: string, message: string, capture = false) =>
+  agent: (appId: string, message: string, capture = false, registryId?: string) =>
     jpost<{
       reply: string;
       receipts: Receipt[];
       stored: Memory[];
       blocked: { namespace: string; reason: string }[];
-    }>("/api/agent", { appId, message, capture }),
+    }>("/api/agent", { appId, message, capture, registryId }),
 
   memories: (namespace?: string) =>
     jget<{ memories: Memory[] }>(
       `/api/memories${namespace ? `?namespace=${namespace}` : ""}`,
     ),
 
-  grants: () =>
+  grants: (registryId?: string) =>
     jget<{
       grants: Grant[];
       owner: string;
       registryId: string;
       packageId: string;
       apps: { chat: string; meal: string };
-    }>("/api/grants"),
+    }>(`/api/grants${registryId ? `?registryId=${registryId}` : ""}`),
 
   setGrant: (appId: string, namespace: string, revoke: boolean) =>
     jpost<{ digest: string; revoked: boolean }>("/api/grant", {
@@ -68,4 +68,7 @@ export const api = {
     jget<{ blobId: string; available: boolean; size?: number; status: number; url: string }>(
       `/api/verify?blobId=${blobId}`,
     ),
+
+  forget: (blobId: string) =>
+    jpost<{ forgotten: string }>("/api/forget", { blobId }),
 };

@@ -49,14 +49,17 @@ public struct AccessRevoked has copy, drop {
     namespace: String,
 }
 
-/// Create a registry and transfer it to the caller.
+/// Create a registry and SHARE it. It must be shared (not owned) so Seal key
+/// servers can dry-run `seal_approve` against it without the owner's context.
+/// Mutation is still owner-only (see the `assert!`s below), so sharing does
+/// not weaken access control.
 entry fun create(ctx: &mut TxContext) {
     let reg = ConsentRegistry {
         id: object::new(ctx),
         owner: ctx.sender(),
         grants: vec_map::empty(),
     };
-    transfer::transfer(reg, ctx.sender());
+    transfer::share_object(reg);
 }
 
 /// Grant `app` access to `namespace`. Owner only.

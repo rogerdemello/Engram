@@ -27,11 +27,12 @@ export async function POST(request: Request) {
     const appId: string = body.appId ?? "chat";
     const message: string = body.message;
     const capture: boolean = Boolean(body.capture);
+    const registryId: string | undefined = body.registryId || undefined;
     if (!message || !String(message).trim()) {
       return Response.json({ error: "message is required" }, { status: 400 });
     }
 
-    const { receipts, blocked } = await recallForAgent(appId, message);
+    const { receipts, blocked } = await recallForAgent(appId, message, registryId);
 
     let stored: Memory[] = [];
     if (capture) {

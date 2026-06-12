@@ -16,8 +16,10 @@ import type { Memory } from "../types";
  */
 const DATA_DIR = join(process.cwd(), "data");
 const FILE = join(DATA_DIR, "memories.json");
+const FORGET_FILE = join(DATA_DIR, "forgotten.json");
 
 let cache: Memory[] | null = null;
+let forgotten: Set<string> | null = null;
 
 function load(): Memory[] {
   if (cache) return cache;
@@ -43,9 +45,41 @@ function persist(list: Memory[]) {
   }
 }
 
+function loadForgotten(): Set<string> {
+  if (forgotten) return forgotten;
+  try {
+    if (existsSync(FORGET_FILE)) {
+      forgotten = new Set(JSON.parse(readFileSync(FORGET_FILE, "utf8")) as string[]);
+      return forgotten;
+    }
+  } catch {
+    /* ignore */
+  }
+  forgotten = new Set();
+  return forgotten;
+}
+
+function persistForgotten(set: Set<string>) {
+  forgotten = set;
+  try {
+    if (!existsSync(DATA_DIR)) mkdirSync(DATA_DIR, { recursive: true });
+    writeFileSync(FORGET_FILE, JSON.stringify([...set]));
+  } catch {
+    /* ephemeral fs */
+  }
+}
+
+/** blobIds the user has chosen to forget (excluded from inspector + recall). */
+export function forgottenSet(): Set<string> {
+  return loadForgotten();
+}
+
 export function listMemories(namespace?: string): Memory[] {
   const all = load();
-  const filtered = namespace ? all.filter((m) => m.namespace === namespace) : all;
+  const gone = loadForgotten();
+  const filtered = all.filter(
+    (m) => !gone.has(m.blobId) && (!namespace || m.namespace === namespace),
+  );
   // newest first
   return [...filtered].reverse();
 }
@@ -59,6 +93,15 @@ export function addMemories(items: Memory[]): Memory[] {
   return fresh;
 }
 
+/** Tombstone a memory: the agent stops using it and it leaves the inspector.
+ *  (The encrypted blob persists on Walrus — true on-chain erasure is roadmap.) */
+export function forgetMemory(blobId: string) {
+  const set = loadForgotten();
+  set.add(blobId);
+  persistForgotten(set);
+}
+
 export function clearMemories() {
   persist([]);
+  persistForgotten(new Set());
 }

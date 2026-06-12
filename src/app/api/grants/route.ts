@@ -1,14 +1,15 @@
 import { readGrants, toUiGrants } from "@/lib/server/consent";
 import { serverEnv } from "@/lib/server/env";
 
-export async function GET() {
+export async function GET(request: Request) {
   try {
-    const raw = await readGrants();
+    const reg = new URL(request.url).searchParams.get("registryId") || undefined;
+    const raw = await readGrants(reg);
     const e = serverEnv();
     return Response.json({
       grants: toUiGrants(raw),
       owner: e.SUI_ADDRESS,
-      registryId: e.MNEME_REGISTRY_ID,
+      registryId: reg || e.MNEME_REGISTRY_ID,
       packageId: e.MNEME_PACKAGE_ID,
       apps: { chat: e.CHAT_APP_ADDRESS, meal: e.MEAL_APP_ADDRESS },
     });
