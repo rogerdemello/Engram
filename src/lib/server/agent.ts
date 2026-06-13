@@ -15,11 +15,16 @@ function model() {
   const azure = createAzure({
     apiKey: e.AZURE_OPENAI_API_KEY,
     apiVersion: e.AZURE_OPENAI_API_VERSION,
+    // use the classic /openai/deployments/{name} URL (accepts dated api-versions);
+    // the default v1 endpoint only supports api-version=preview.
+    useDeploymentBasedUrls: true,
     ...(e.AZURE_OPENAI_BASE_URL
       ? { baseURL: e.AZURE_OPENAI_BASE_URL }
       : { resourceName: e.AZURE_OPENAI_RESOURCE_NAME }),
   });
-  return azure(e.AZURE_OPENAI_DEPLOYMENT);
+  // .chat(...) targets /chat/completions; the default azure(id) uses the
+  // newer Responses API path, which 404s on standard deployments.
+  return azure.chat(e.AZURE_OPENAI_DEPLOYMENT);
 }
 
 const PERSONAS: Record<string, string> = {
