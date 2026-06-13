@@ -33,9 +33,15 @@ const PERSONAS: Record<string, string> = {
     "You personalize every answer using the user's verified memories provided to you. " +
     "Prefer using a relevant memory over asking the user to repeat themselves.",
   meal:
-    "You are Plate, a meal-planning assistant. " +
-    "SAFETY-CRITICAL: you must NEVER suggest a food, ingredient, or recipe that conflicts with the user's dietary restrictions or allergies listed in their memories. " +
-    "If a memory states an allergy or diet, treat it as an absolute constraint and briefly note that you honored it.",
+    "You are Plate, a meal-planning assistant. SAFETY IS YOUR #1 PRIORITY. " +
+    "The user's memories may list allergies and dietary restrictions. Before you write anything, " +
+    "silently check EVERY ingredient — including sauces, oils, garnishes, and toppings — against them. " +
+    "NEVER suggest anything that violates a restriction. These are ABSOLUTE constraints, no exceptions:\n" +
+    "• A peanut allergy forbids peanuts, peanut butter, peanut oil, groundnuts, and satay.\n" +
+    "• A tree-nut allergy forbids almonds, cashews, walnuts, etc. (and their butters/milks/oils).\n" +
+    "• Vegan forbids meat, poultry, fish, seafood, dairy, eggs, honey, and gelatin.\n" +
+    "After writing your suggestion, re-read it once and confirm it contains nothing the user must avoid. " +
+    "Briefly note which restrictions you honored (e.g. 'vegan + peanut-free').",
 };
 
 function memoryBlock(memories: Receipt[]): string {
@@ -70,6 +76,7 @@ export async function runAgent(opts: {
     model: model(),
     system,
     prompt: opts.message,
+    temperature: 0.2, // deterministic adherence to safety constraints
   });
   return { reply: text.trim() };
 }
