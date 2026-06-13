@@ -1,5 +1,6 @@
 import { recallForAgent, captureMemories } from "@/lib/server/memory-service";
 import { runAgent, agentConfigured } from "@/lib/server/agent";
+import { rateLimit, globalCap, tooMany } from "@/lib/server/ratelimit";
 import type { Memory, Receipt } from "@/lib/types";
 
 /** Demoable reply when Azure OpenAI isn't configured yet — still proves the
@@ -23,6 +24,10 @@ function fallbackReply(receipts: Receipt[], blocked: { namespace: string }[]): s
 
 export async function POST(request: Request) {
   try {
+    const rl = rateLimit(request, "agent", 15);
+    if (!rl.ok) return tooMany(rl.retryAfter);
+    if (!globalCap()) return tooMany(60, "Demo is busy right now — try again shortly.");
+
     const body = await request.json();
     const appId: string = body.appId ?? "chat";
     const message: string = body.message;
