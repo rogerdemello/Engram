@@ -10,8 +10,8 @@ Fill these into the DeepSurge submission form.
 | **Logo (1:1)** | `public/logo.png` (512×512) · `public/logo-1024.png` |
 | **Public GitHub repo** | https://github.com/rogerdemello/Engram |
 | **Demo video (≤5 min, YouTube)** | _(record per `DEMO.md`)_ |
-| **Website** | _(Vercel URL from `DEPLOY.md`)_ |
-| **Deployment** | Sui **testnet** |
+| **Website** | https://engram-roger-demellos-projects.vercel.app |
+| **Deployment** | Sui **testnet** (app live on Vercel) |
 | **Package ID** | `0x032dbacbb8573145f3a46dcd4c15ddf4164521504c4507847e5b51d4258361a7` |
 
 ## Description (what it does, why it matters)
