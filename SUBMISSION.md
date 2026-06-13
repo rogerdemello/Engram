@@ -8,7 +8,7 @@ Fill these into the DeepSurge submission form.
 | **Track** | Agentic Web (primary) — also targets the Walrus specialized track |
 | **One-liner** | Your AI's memory — owned by you, and provably honest. |
 | **Logo (1:1)** | `public/logo.png` (512×512) · `public/logo-1024.png` |
-| **Public GitHub repo** | _(push this repo; make public during judging)_ |
+| **Public GitHub repo** | https://github.com/rogerdemello/Engram |
 | **Demo video (≤5 min, YouTube)** | _(record per `DEMO.md`)_ |
 | **Website** | _(Vercel URL from `DEPLOY.md`)_ |
 | **Deployment** | Sui **testnet** |
