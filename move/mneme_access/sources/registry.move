@@ -1,8 +1,8 @@
-/// mneme_access — on-chain consent + access-control layer for Mneme.
+/// mneme_access — on-chain consent + access-control layer for Engram.
 ///
 /// A user owns a `ConsentRegistry`. They grant / revoke per-(app, namespace)
 /// access to their AI memories. Grants are the single source of truth for:
-///   1. App-level consent — the Mneme backend checks `is_authorized` before
+///   1. App-level consent — the Engram backend checks `is_authorized` before
 ///      letting one app's agent recall memories from another app's namespace.
 ///   2. Seal decryption — `seal_approve` aborts unless the caller (the Seal
 ///      SessionKey's address) holds a live grant, so revoking on-chain

@@ -28,7 +28,7 @@ export function Wordmark({ size = 28 }: { size?: number }) {
   return (
     <div className="flex items-center gap-2.5">
       <LogoMark size={size} />
-      <span className="text-[1.15rem] font-semibold tracking-tight">Mneme</span>
+      <span className="text-[1.15rem] font-semibold tracking-tight">Engram</span>
     </div>
   );
 }

@@ -1,6 +1,6 @@
-# Deploying Mneme
+# Deploying Engram
 
-Mneme has a server runtime (route handlers hold the MemWal delegate key, the Sui signer, and the
+Engram has a server runtime (route handlers hold the MemWal delegate key, the Sui signer, and the
 Azure key), so the **app** is hosted on a Node host (Vercel). Walrus Sites is static-only, so we use
 it to **dogfood Walrus for the landing page**.
 

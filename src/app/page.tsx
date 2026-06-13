@@ -48,7 +48,7 @@ export default function Landing() {
         </h1>
         <p className="text-base sm:text-lg text-muted max-w-2xl leading-relaxed">
           Today your AI&apos;s memory of you is locked inside each app — invisible, unportable,
-          unauditable. Mneme makes it <b className="text-foreground/90">yours</b>: verifiable on
+          unauditable. Engram makes it <b className="text-foreground/90">yours</b>: verifiable on
           Walrus, encrypted with Seal, shared between apps only with your{" "}
           <b className="text-foreground/90">on-chain consent</b>, and every answer{" "}
           <b className="text-foreground/90">receipted</b>.
@@ -83,7 +83,7 @@ export default function Landing() {
         <p className="text-sm sm:text-base text-muted max-w-3xl leading-relaxed">
           As agents start acting for us — booking, buying, advising — the question isn&apos;t just
           what they can do, but <b className="text-foreground/90">what they remember about us, who
-          owns it, and whether we can trust it</b>. Mneme is a portable, user-owned memory account:
+          owns it, and whether we can trust it</b>. Engram is a portable, user-owned memory account:
           one source of truth your agents read with your permission, that you can audit fact-by-fact
           and revoke at any time.
         </p>
@@ -95,7 +95,7 @@ export default function Landing() {
       </section>
 
       <footer className="text-center text-[0.75rem] text-muted py-8">
-        Mneme · Sui Overflow 2026 · Agentic Web × Walrus
+        Engram · Sui Overflow 2026 · Agentic Web × Walrus
       </footer>
     </div>
   );

@@ -1,5 +1,5 @@
 /**
- * Public, non-secret constants for Mneme (Sui testnet).
+ * Public, non-secret constants for Engram (Sui testnet).
  * Safe to import from client or server components.
  */
 
@@ -37,7 +37,7 @@ export const APPS: Record<"chat" | "meal", AppDef> = {
   chat: {
     id: "chat",
     namespace: "chat",
-    name: "Mneme Chat",
+    name: "Engram Chat",
     tagline: "Your everyday assistant — it remembers what you tell it.",
     accent: "violet",
   },

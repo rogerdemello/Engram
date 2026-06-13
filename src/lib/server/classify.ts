@@ -4,7 +4,7 @@ import "server-only";
  * Sensitivity classification.
  *
  * Every memory is encrypted at rest on Walrus by MemWal. On top of that,
- * Mneme tags each fact's *sensitivity* so the UI and the consent layer can
+ * Engram tags each fact's *sensitivity* so the UI and the consent layer can
  * treat health/financial/identity data more carefully (sensitive memories
  * are surfaced as locked and require explicit per-app consent to share).
  *

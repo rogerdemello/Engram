@@ -1,4 +1,4 @@
-# Mneme — Demo script (≤ 5 min video)
+# Engram — Demo script (≤ 5 min video)
 
 Goal: tell the whole story in one continuous, clickable flow. Record at 1080p+, browser at `/app`.
 Run `node scripts/dev/reset.mjs` first for a clean slate (empty inspector, no grants).
@@ -10,10 +10,10 @@ Run `node scripts/dev/reset.mjs` first for a clean slate (empty inspector, no gr
 
 ### 0:00 — Hook (15s)  · landing page `/`
 > "Your AI knows a lot about you. But that memory is trapped inside each app — invisible, unportable,
-> and you can't verify what it remembers or why it said something. Mneme fixes that. It's a memory
+> and you can't verify what it remembers or why it said something. Engram fixes that. It's a memory
 > layer **you** own, on Sui and Walrus." → click **Launch app**.
 
-### 0:15 — Capture (50s)  · Mneme Chat
+### 0:15 — Capture (50s)  · Engram Chat
 - Type: **"I'm vegan and I have a severe peanut allergy. I'm based in Lisbon."**
 > "I tell this assistant about myself…"
 - Point to the inspector: three memory cards appear.
@@ -31,7 +31,7 @@ Run `node scripts/dev/reset.mjs` first for a clean slate (empty inspector, no gr
 
 ### 1:40 — Consent (40s)  · Consent panel
 > "I grant it access — on-chain."
-- Click **grant access** on "Plate → read Mneme Chat memories." Show the **tx ↗** link (Sui explorer).
+- Click **grant access** on "Plate → read Engram Chat memories." Show the **tx ↗** link (Sui explorer).
 > "That's a real Sui transaction against our `mneme_access` contract. Now…"
 
 ### 2:20 — Portability + receipts (45s)  · Plate
@@ -48,7 +48,7 @@ Run `node scripts/dev/reset.mjs` first for a clean slate (empty inspector, no gr
 > enforced by the contract."
 
 ### 3:40 — Close (30s)  · landing / package on explorer
-> "Mneme is the memory layer for the agentic web. As agents start acting for us, you should own your
+> "Engram is the memory layer for the agentic web. As agents start acting for us, you should own your
 > context, share it on your terms, and audit every answer. Verifiable on Walrus, consent on Sui.
 > Built for Sui Overflow 2026."
 - Show the package on suiscan + the live URL.

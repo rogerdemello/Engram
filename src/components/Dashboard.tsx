@@ -57,7 +57,7 @@ export function Dashboard() {
       </header>
 
       <p className="text-sm text-muted -mt-1 max-w-2xl">
-        Two different AI apps, one memory you own. Teach <b className="text-foreground/90">Mneme Chat</b>,
+        Two different AI apps, one memory you own. Teach <b className="text-foreground/90">Engram Chat</b>,
         then grant <b className="text-foreground/90">Plate</b> access on-chain and watch it use the same
         verified memories — every answer receipted. Revoke anytime.
       </p>
@@ -107,7 +107,7 @@ export function Dashboard() {
 
           {shown.length === 0 ? (
             <div className="text-xs text-muted py-8 text-center">
-              No memories yet. Tell Mneme Chat something about yourself ↑
+              No memories yet. Tell Engram Chat something about yourself ↑
             </div>
           ) : (
             <div className="grid sm:grid-cols-2 gap-2.5 max-h-[460px] overflow-y-auto pr-1">

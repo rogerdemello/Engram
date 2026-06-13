@@ -15,7 +15,7 @@
     <path d="M70 60 L100 43 M70 60 L40 43 M70 60 L70 95" stroke="url(#g)" stroke-width="4" stroke-linecap="round"/>
     <circle cx="100" cy="43" r="6.5" fill="#10B981"/><circle cx="40" cy="43" r="6.5" fill="#8B5CF6"/><circle cx="70" cy="95" r="6.5" fill="#38BDF8"/>
   </g>
-  <text x="250" y="225" font-family="Inter, Arial, sans-serif" font-size="64" font-weight="700" fill="#ECECF2">Mneme</text>
+  <text x="250" y="225" font-family="Inter, Arial, sans-serif" font-size="64" font-weight="700" fill="#ECECF2">Engram</text>
   <text x="96" y="370" font-family="Inter, Arial, sans-serif" font-size="58" font-weight="700" fill="#ECECF2">Your AI&#8217;s memory —</text>
   <text x="96" y="442" font-family="Inter, Arial, sans-serif" font-size="58" font-weight="700" fill="url(#g)">owned by you, provably honest.</text>
   <text x="96" y="520" font-family="Inter, Arial, sans-serif" font-size="30" fill="#8A8AA3">A verifiable memory layer for AI agents · Sui · Walrus · Seal</text>

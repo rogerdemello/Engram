@@ -1,4 +1,4 @@
-/** Shared domain types for Mneme. Safe to import anywhere. */
+/** Shared domain types for Engram. Safe to import anywhere. */
 
 import type { AppId } from "./constants";
 
@@ -13,7 +13,7 @@ export interface Memory {
   namespace: string;
   /** Always true: MemWal Seal-encrypts every memory at rest on Walrus. */
   sealed: boolean;
-  /** Mneme's sensitivity classification (health/finance/identity/...). */
+  /** Engram's sensitivity classification (health/finance/identity/...). */
   sensitive: boolean;
   /** Sensitivity category when sensitive. */
   sensitivityLabel?: string;

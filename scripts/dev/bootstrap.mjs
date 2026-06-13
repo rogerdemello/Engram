@@ -1,5 +1,5 @@
 /**
- * Mneme dev bootstrap (testnet).
+ * Engram dev bootstrap (testnet).
  *
  * Idempotent. On first run it:
  *   1. generates an Ed25519 Sui testnet keypair and funds it from the faucet,

@@ -29,7 +29,7 @@ function model() {
 
 const PERSONAS: Record<string, string> = {
   chat:
-    "You are Mneme Chat, a warm, concise personal assistant. " +
+    "You are Engram Chat, a warm, concise personal assistant. " +
     "You personalize every answer using the user's verified memories provided to you. " +
     "Prefer using a relevant memory over asking the user to repeat themselves.",
   meal:

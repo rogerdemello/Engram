@@ -1,8 +1,8 @@
 <div align="center">
 
-<img src="./public/logo.png" width="96" alt="Mneme" />
+<img src="./public/logo.png" width="96" alt="Engram" />
 
-# Mneme
+# Engram
 
 ### Your AI's memory — owned by you, and provably honest.
 
@@ -20,9 +20,9 @@ A user-owned, verifiable **memory layer for AI agents**, built on **Sui · Walru
 
 Today your AI's memory of you is locked inside each app — ChatGPT, Claude, Gemini all keep their own private, invisible notes. You can't see them, move them, verify them, or audit *why* an agent said what it said. As agents start **acting** for us — booking, buying, advising — that becomes a trust and ownership crisis: *who owns your AI's memory, and can you trust what it remembers?*
 
-## What Mneme does
+## What Engram does
 
-Mneme turns AI memory into something **you own and control**, on three pillars:
+Engram turns AI memory into something **you own and control**, on three pillars:
 
 1. **Ownership** — every fact an agent learns is stored as an encrypted memory on **Walrus** (via MemWal). You hold the keys. The memory is portable across apps.
 2. **Verifiability & accountability** — every memory shows its **Walrus blob ID**; anyone can fetch it from the public network and confirm it's real and encrypted. Every agent answer is **receipted** — it cites the exact memories it used, so you can audit and correct it.
@@ -32,11 +32,11 @@ Sensitive facts (health, finance, identity) are auto-classified and protected wi
 
 ## The demo in 5 beats
 
-![Mneme dashboard](./shots/app.png)
+![Engram dashboard](./shots/app.png)
 
 > Two different AI apps, one memory you own. (`/app`)
 
-1. **Capture** — Tell **Mneme Chat**: *"I'm vegan and I have a severe peanut allergy."* → it's extracted into discrete memories, each with a Walrus blob ID and a 🔒 sealed badge; the allergy is flagged **health-sensitive**.
+1. **Capture** — Tell **Engram Chat**: *"I'm vegan and I have a severe peanut allergy."* → it's extracted into discrete memories, each with a Walrus blob ID and a 🔒 sealed badge; the allergy is flagged **health-sensitive**.
 2. **Inspect** — The memory inspector shows each memory's owner (your Sui address), Walrus storage link, and sensitivity. Click **verify** → it's fetched live from the public Walrus aggregator.
 3. **Port + consent** — Open **Plate** (a meal-planner — a *different* app/namespace). Ask it to plan dinner. It's **blocked** — no consent. **Grant** it access on-chain (one click → a Sui tx). Now it plans a safe, vegan, peanut-free meal.
 4. **Audit** — Every Plate answer shows **receipts**: the exact memories it used, each linking to its Walrus blob.
@@ -46,7 +46,7 @@ Sensitive facts (health, finance, identity) are auto-classified and protected wi
 
 ```
             ┌──────────────────────────── Browser (Next.js / React) ─────────────────────────┐
-            │   Mneme Chat (ns: chat)        Plate (ns: meal)        Inspector · Consent · Verify │
+            │   Engram Chat (ns: chat)        Plate (ns: meal)        Inspector · Consent · Verify │
             └───────────────┬──────────────────────┬───────────────────────────┬───────────────┘
                             │  /api/capture,/agent  │  /api/grant,/grants       │ /api/verify
             ┌───────────────▼──────────────────────▼───────────────────────────▼───────────────┐

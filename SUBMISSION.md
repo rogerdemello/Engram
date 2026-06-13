@@ -1,10 +1,10 @@
-# Sui Overflow 2026 — Submission sheet (Mneme)
+# Sui Overflow 2026 — Submission sheet (Engram)
 
 Fill these into the DeepSurge submission form.
 
 | Field | Value |
 |---|---|
-| **Project name** | Mneme |
+| **Project name** | Engram |
 | **Track** | Agentic Web (primary) — also targets the Walrus specialized track |
 | **One-liner** | Your AI's memory — owned by you, and provably honest. |
 | **Logo (1:1)** | `public/logo.png` (512×512) · `public/logo-1024.png` |
@@ -16,9 +16,9 @@ Fill these into the DeepSurge submission form.
 
 ## Description (what it does, why it matters)
 
-Mneme is a user-owned, verifiable memory layer for AI agents. Today an AI's memory of you is locked
+Engram is a user-owned, verifiable memory layer for AI agents. Today an AI's memory of you is locked
 inside each app — invisible, unportable, and unauditable. As agents start acting on our behalf, that
-becomes a trust and ownership crisis. Mneme makes your AI memory **yours**: every fact an agent learns
+becomes a trust and ownership crisis. Engram makes your AI memory **yours**: every fact an agent learns
 is stored encrypted on **Walrus** (via MemWal) with a verifiable blob ID; sharing memory across apps
 requires your **on-chain consent** (our `mneme_access` Sui Move contract), enforced live — revoke and
 the agent loses access immediately; and every agent answer is **receipted**, citing the exact memories
